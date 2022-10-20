@@ -130,7 +130,7 @@ const getOrder = async (req, res) => {
                 id: orders.clientId,
                 name: orders.clientName,
                 address: orders.address,
-                phone: orderRouter.phone
+                phone: orders.phone
             },
             cake: {
                 id: orders.cakeId,
@@ -151,4 +151,69 @@ const getOrder = async (req, res) => {
     }
 }
 
-export { postOrder, getOrder }
+const getOrderById = async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+
+    try {
+
+        if (id) {
+            const verifyId = await connection.query(`
+            SELECT * FROM orders WHERE id=$1
+        `, [id]);
+
+            if (verifyId.rowCount === 0) {
+                return res.sendStatus(404);
+            }
+
+            const getOrderById = await connection.query(`
+            SELECT 
+                clients.id AS "clientId",
+                clients.name AS "clientName",
+                clients.address AS "address",
+                clients.phone AS "phone",
+                cakes.id AS "cakeId",
+                cakes.name AS "cakeName",
+                cakes.price AS "price",
+                cakes.description AS "description",
+                cakes.image AS "image",
+                orders.id AS "orderId",
+                orders."createdAt" AS "createdAt",
+                orders.quantity AS "quantity",
+                orders."totalPrice" AS "totalPrice"
+            FROM orders
+            JOIN clients ON orders."clientId"=clients.id
+            JOIN cakes ON orders."cakeId"=cakes.id
+            WHERE orders.id=$1
+            `, [id]);
+
+            const ordersMap = getOrderById.rows.map((orders) => ({
+                client: {
+                    id: orders.clientId,
+                    name: orders.clientName,
+                    address: orders.address,
+                    phone: orders.phone
+                },
+                cake: {
+                    id: orders.cakeId,
+                    name: orders.cakeName,
+                    price: orders.price,
+                    description: orders.description,
+                    image: orders.image
+                },
+                orderId: orders.orderId,
+                createdAt: dayjs(orders.createdAt).format("YYYY-MM-DD HH:mm"),
+                quantity: orders.quantity,
+                totalPrice: orders.totalPrice
+            }))
+
+            return res.status(200).send(ordersMap);
+        }
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(500)
+    }
+}
+
+
+export { postOrder, getOrder, getOrderById }
