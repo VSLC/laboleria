@@ -1,8 +1,9 @@
 import express from 'express'
-import { postClient } from '../controllers/clientsController.js';
-
+import { findOrderByClientId, postClient } from '../controllers/clientsController.js'
+import { clientMiddleware } from '../middlewares/clientsMiddleware.js';
 const router = express.Router();
 
-router.post('/clients', postClient);
+router.post('/clients', clientMiddleware, postClient);
+router.get('/clients/:id/orders', findOrderByClientId);
 
 export default router;

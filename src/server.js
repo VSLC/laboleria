@@ -6,6 +6,7 @@ import cakesRouter from './routes/cakesRouter.js'
 import clientsRouter from './routes/clientsRouter.js'
 import orderRouter from './routes/orderRoute.js'
 import dayjs from 'dayjs'
+import { findOrderByClientId } from './controllers/clientsController.js'
 
 dotenv.config();
 
@@ -16,7 +17,5 @@ server.use(express.json())
 server.use(cakesRouter);
 server.use(clientsRouter);
 server.use(orderRouter);
-
-
 
 server.listen(process.env.PORT, () => { console.log("Listening on port 4000") })
