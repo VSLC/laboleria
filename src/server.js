@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv'
-import { connection } from './database.js'
 import cakesRouter from './routes/cakesRouter.js'
 import clientsRouter from './routes/clientsRouter.js'
 import orderRouter from './routes/orderRoute.js'
