@@ -5,8 +5,6 @@ import { connection } from './database.js'
 import cakesRouter from './routes/cakesRouter.js'
 import clientsRouter from './routes/clientsRouter.js'
 import orderRouter from './routes/orderRoute.js'
-import dayjs from 'dayjs'
-import { findOrderByClientId } from './controllers/clientsController.js'
 
 dotenv.config();
 

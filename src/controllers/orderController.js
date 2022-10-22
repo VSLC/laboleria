@@ -1,5 +1,4 @@
 import { connection } from '../database.js'
-import joi from 'joi'
 import dayjs from 'dayjs'
 
 const postOrder = async (req, res) => {
@@ -36,7 +35,7 @@ const postOrder = async (req, res) => {
 
 const getOrder = async (req, res) => {
     const { date } = req.query
-    console.log(date)
+
     try {
 
         if (date) {
@@ -143,7 +142,6 @@ const getOrder = async (req, res) => {
 
 const getOrderById = async (req, res) => {
     const { id } = req.params;
-    console.log(id);
 
     try {
 
