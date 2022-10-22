@@ -9,10 +9,10 @@ dotenv.config();
 
 const server = express();
 server.use(cors());
-server.use(express.json())
+server.use(express.json());
 
 server.use(cakesRouter);
 server.use(clientsRouter);
 server.use(orderRouter);
 
-server.listen(process.env.PORT, () => { console.log("Listening on port 4000") })
+server.listen(process.env.PORT, () => { console.log("Listening on port 4000") });

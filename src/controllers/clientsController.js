@@ -1,6 +1,5 @@
 import { connection } from '../database.js'
 import dayjs from 'dayjs'
-import joi from 'joi'
 
 const postClient = async (req, res) => {
     const { name, address, phone } = res.locals.body;
@@ -36,7 +35,7 @@ const findOrderByClientId = async (req, res) => {
             orderId: orders.id,
             quantity: orders.quantity,
             createdAt: dayjs(orders.createdAt).format("YYYY-MM-DD HH:mm"),
-            totalPrice: orders.totalPrice,
+            totalPrice: parseFloat(orders.totalPrice),
             cakeName: orders.name
         }))
 

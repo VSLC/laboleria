@@ -3,24 +3,10 @@ import dayjs from 'dayjs'
 
 const postOrder = async (req, res) => {
     const { clientId, cakeId, quantity } = res.locals.body;
-    console.log(clientId, cakeId, quantity, "res.locals.body")
-
 
     try {
-
-        const findClientById = await connection.query('SELECT * FROM clients WHERE id=$1', [clientId]);
         const findCakeById = await connection.query('SELECT * FROM cakes WHERE id=$1', [cakeId]);
-
-
-        if (findClientById.rowCount === 0) {
-            return res.status(404).send("Usuário não encontrado.");
-        }
-
-        if (findCakeById.rowCount === 0) {
-            return res.status(404).send("Bolo não encontrado.");
-        }
-
-        let totalPrice = findCakeById.rows[0].price * quantity;
+        let totalPrice = parseFloat(findCakeById.rows[0].price) * quantity;
         const createdAt = dayjs().format("YYYY-MM-DD HH:mm");
 
         const insertOrder = await connection.query(`INSERT INTO orders ("clientId","cakeId",quantity,"totalPrice","createdAt") 
@@ -35,6 +21,7 @@ const postOrder = async (req, res) => {
 
 const getOrder = async (req, res) => {
     const { date } = req.query
+    console.log(date)
 
     try {
 
@@ -82,7 +69,7 @@ const getOrder = async (req, res) => {
                 orderId: orders.orderId,
                 createdAt: dayjs(orders.createdAt).format("YYYY-MM-DD HH:mm"),
                 quantity: orders.quantity,
-                totalPrice: orders.totalPrice
+                totalPrice: parseFloat(orders.totalPrice)
             }))
 
             return res.status(200).send(ordersMap)
@@ -131,7 +118,7 @@ const getOrder = async (req, res) => {
             orderId: orders.orderId,
             createdAt: dayjs(orders.createdAt).format("YYYY-MM-DD HH:mm"),
             quantity: orders.quantity,
-            totalPrice: orders.totalPrice
+            totalPrice: parseFloat(orders.totalPrice)
         }))
         return res.status(200).send(ordersMap);
     } catch (error) {
@@ -192,7 +179,7 @@ const getOrderById = async (req, res) => {
                 orderId: orders.orderId,
                 createdAt: dayjs(orders.createdAt).format("YYYY-MM-DD HH:mm"),
                 quantity: orders.quantity,
-                totalPrice: orders.totalPrice
+                totalPrice: parseFloat(orders.totalPrice)
             }))
 
             return res.status(200).send(ordersMap);

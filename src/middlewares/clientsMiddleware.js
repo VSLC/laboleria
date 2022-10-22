@@ -11,7 +11,6 @@ const clientMiddleware = async (req, res, next) => {
     if (validation.error) {
         return res.status(400).send(validation.error.details.map(error => error.message));
     }
-    console.log("passou middleware");
     res.locals.body = req.body
     next()
 }
